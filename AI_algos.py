@@ -126,11 +126,7 @@ def count_range(my_team, range_data):
     return team_range
 
 def eliminate_banned_picked(heroes, A_side, B_side, A_ban, B_ban):
-    to_eliminate = [A_side] + [B_side] + [A_ban] + [B_ban]
-    output = []
-    for hero in heroes:
-        if hero not in to_eliminate:
-            output.append(hero)
+    to_eliminate = A_side + B_side + A_ban + B_ban
     for hero in to_eliminate:
         try:
             heroes.remove(hero)

@@ -10,10 +10,8 @@ Created on Tue Mar 20 00:01:38 2018
 
 import requests
 import json
-from API import hero_list, API_rates #, pickrates, banrates
+from API import hero_list, hero_range, API_rates #, pickrates, banrates
 from API import pull_hero
-import itertools
-from hero_data import hero_range, key_CP_items, key_WP_items, key_Util_items
 
 
 """
@@ -29,6 +27,7 @@ def AI_ban(A_side, B_side, A_ban, B_ban):
 
 """
 Picking algorithms
+
 """
 
 def auto_highest(A_side, B_side, A_ban = [], B_ban = []):
@@ -66,21 +65,45 @@ def ban_second_highest(A_side, B_side, A_ban = [], B_ban = []):
                 break
     return output
 
+def account_roles(A_side, B_side, A_ban = [], B_ban = []):
+    """
+    Accounts for roles in 5v5. Warning: Does not account for lane position
+    """
+    team_roles = {"Carry" : 3, "Captain" : 1, "Jungler" : 1}
+    
+    if len(A_side)%2 == 0 or (len(A_side)%2 == 1 and len(B_side) > len(A_side)):
+        #A side
+        for name in A_side:
+            data = [hero for hero in API_rates if hero['name'] == name]
+            roles = data[0]["roles"]
+            for role in roles:            
+                team_roles[role] -= 1/len(roles)
+        print("A side", team_roles)
 
+    else:
+        #B side
+        for name in B_side:
+            data = [hero for hero in API_rates if hero['name'] == name]
+            roles = data[0]["roles"]
+            for role in roles:            
+                team_roles[role] -= 1/len(roles)
+        print("B side", team_roles)
+        
+    for hero in API_rates:
+        if (hero["name"] in A_side) or (hero["name"] in B_side) or (hero["name"] in A_ban) or (hero["name"] in B_ban) :
+            pass
+        else:
+            for role in hero["roles"]:
+                if team_roles[role] > 0:
+                    print(hero["roles"])
+                    return hero["name"]
+                else:
+                    pass
+    return "NIL"
 
 #==============================================================================
 # AUXILIARY FUNCTIONS
-#==============================================================================     
-                
-def eliminate_banned_picked(heroes, A_side, B_side, A_ban, B_ban):
-    to_eliminate = A_side + B_side + A_ban + B_ban
-    #print(to_eliminate)
-    for hero in to_eliminate:
-        try:
-            heroes.remove(hero)
-        except ValueError:
-            pass
-    return heroes
+#==============================================================================
 
 def count_roles(my_team, role_data):
     team_roles = {"Carry" : 3, "Captain" : 1, "Jungler" : 1}
@@ -92,6 +115,24 @@ def count_roles(my_team, role_data):
     #print(team_roles)
     return team_roles
     
+def count_range(my_team, range_data):
+    team_range = {"melee" : 3, "ranged" : 3}
+    for name in my_team:
+        if range_data[name] == "both":
+            team_range["melee"] -= 0.5
+            team_range["ranged"] -= 0.5
+        else:
+            team_range[range_data[name]] -= 1
+    return team_range
+
+def eliminate_banned_picked(heroes, A_side, B_side, A_ban, B_ban):
+    to_eliminate = A_side + B_side + A_ban + B_ban
+    for hero in to_eliminate:
+        try:
+            heroes.remove(hero)
+        except ValueError:
+            pass
+    return heroes
 
 def eliminate_by_role(heroes, team_roles):
     for hero in API_rates:
@@ -109,77 +150,19 @@ def eliminate_by_role(heroes, team_roles):
                 pass
     return heroes
     
-def count_range(my_team):
-    team_range = {"melee" : 3, "ranged" : 3}
-    for name in my_team:
-        if hero_range[name] == "both":
-            team_range["melee"] -= 0.5
-            team_range["ranged"] -= 0.5
-        else:
-            team_range[hero_range[name]] -= 1
-    return team_range
-
-
-def eliminate_by_range(heroes, team_range):
+def eliminate_by_range(heroes, team_range, range_data):
     for mode in team_range:
         if team_range[mode] <= 0:
             for hero in heroes:
-                if hero_range[hero] == mode:
+                if range_data[hero] == mode:
                     try:
                         heroes.remove(hero)
                     except ValueError:
                         pass
             break
     return heroes
-
-def count_build(my_team):
-    team_build = {"CP" : 2, "WP" : 2}
-    for hero in my_team:
-        CP = 0
-        WP = 0
-        builds = pull_hero(hero)["builds"]
-        for build in builds:
-            WP_items = 0
-            CP_items = 0
-            for item in build["items"]:
-                if item in key_WP_items:
-                    WP_items += 1
-                if item in key_CP_items:
-                    CP_items += 1
-            if WP_items > 2:
-                WP = 1
-            if CP_items > 2:
-                CP = 1
-        if CP != 0 or WP !=0:    
-            team_build["CP"] -= CP/(WP+CP)
-            team_build["WP"] -= WP/(WP+CP)
-    return team_build   
                         
-def eliminate_by_build(heroes, team_build):
-    for hero in heroes:
-        CP = 0
-        WP = 0
-        builds = pull_hero(hero)["builds"]
-        for build in builds:
-            WP_items = 0
-            CP_items = 0
-            for item in build["items"]:
-                if item in key_WP_items:
-                    WP_items += 1
-                if item in key_CP_items:
-                    CP_items += 1
-            if WP_items > 2:
-                WP = 1
-            if CP_items > 2:
-                CP = 1
-        if (WP == 1 and team_build["WP"] > 0) or (CP == 1 and team_build["CP"] > 0):
-            pass
-        elif WP == 0 and CP == 0:
-            pass
-        else:
-            heroes.remove(hero)     
-    return heroes
-    
+        
 #==============================================================================
 # INDEX PROCESSORS
 #==============================================================================
@@ -218,26 +201,25 @@ def Elim_Index(A_side, B_side, A_ban = [], B_ban = []):
     
     #Role and range accounting 
     team_roles = count_roles(my_team, API_rates)
-    team_range = count_range(my_team)
-    team_build = count_build(my_team)
+    team_range = count_range(my_team, hero_range)
 
     #Elimination process
     candidates = list(hero_list)
     candidates = eliminate_banned_picked(candidates, A_side, B_side, A_ban, B_ban)
     candidates = eliminate_by_role(candidates, team_roles)
-    candidates = eliminate_by_range(candidates, team_range)
-    candidates = eliminate_by_build(candidates, team_build)
+    candidates = eliminate_by_range(candidates, team_range, hero_range)
     
-    nominees = synergy_index_calc(candidates, my_team, enemy_team)
+    
+    nominees = SC_index_calc(candidates, my_team, enemy_team)
     return nominees[0]["name"]
 
 
-def synergy_index_calc(candidates, my_team, enemy_team):
+def SC_index_calc(candidates, my_team, enemy_team):
     candidate_threshold = 10
     nominees = []
     
     for candidate in candidates[:candidate_threshold]:
-        nominees.append({"name": candidate, "synergy": 1})
+        nominees.append({"name": candidate, "synergy": 1, "counter":1, "overall": 1})
     
     if len(my_team)> 0:
         for teammate in my_team:
@@ -248,11 +230,23 @@ def synergy_index_calc(candidates, my_team, enemy_team):
                 match_row = [hero for hero in hero_data if hero['key'] == nominee["name"]]
                 winrate = match_row[0]["winRate"]
                 nominee["synergy"] = synergy_multiplier(nominee["synergy"], winrate)
-        
-   
-    nominees = sorted(nominees, key=lambda k: k["synergy"], reverse = True) 
+    
+    if len(enemy_team)> 0:
+        for enemy in my_team:
+            hero_data = pull_hero(enemy)["playingAgainst"]
+            hero_data = [hero for hero in hero_data if hero['key'] in candidates[:candidate_threshold]]
+            
+            for nominee in nominees:
+                match_row = [hero for hero in hero_data if hero['key'] == nominee["name"]]
+                winrate = match_row[0]["winRate"]
+                nominee["counter"] = counter_multiplier(nominee["counter"], winrate)
+    
     for nominee in nominees:
-        print(nominee["name"], nominee["synergy"])
+        nominee["overall"] = nominee["synergy"]*nominee["counter"]
+    
+    nominees = sorted(nominees, key=lambda k: k["overall"], reverse = True) 
+    for nominee in nominees:
+        print(nominee["name"], nominee["synergy"], nominee["counter"], nominee["overall"])
     #print(nominees)
     
     return nominees
@@ -344,79 +338,10 @@ def get_nominees(candidates, my_team, enemy_team):
     
     return nominees
         
-def SC_index_calc(candidates, my_team, enemy_team):
-    candidate_threshold = 10
-    nominees = []
-    
-    for candidate in candidates[:candidate_threshold]:
-        nominees.append({"name": candidate, "synergy": 1, "counter":1, "overall": 1})
-    
-    if len(my_team)> 0:
-        for teammate in my_team:
-            hero_data = pull_hero(teammate)["playingWith"]
-            hero_data = [hero for hero in hero_data if hero['key'] in candidates[:candidate_threshold]]
-            
-            for nominee in nominees:
-                match_row = [hero for hero in hero_data if hero['key'] == nominee["name"]]
-                winrate = match_row[0]["winRate"]
-                nominee["synergy"] = synergy_multiplier(nominee["synergy"], winrate)
-    
-    if len(enemy_team)> 0:
-        for enemy in my_team:
-            hero_data = pull_hero(enemy)["playingAgainst"]
-            hero_data = [hero for hero in hero_data if hero['key'] in candidates[:candidate_threshold]]
-            
-            for nominee in nominees:
-                match_row = [hero for hero in hero_data if hero['key'] == nominee["name"]]
-                winrate = match_row[0]["winRate"]
-                nominee["counter"] = counter_multiplier(nominee["counter"], winrate)
-    
-    for nominee in nominees:
-        nominee["overall"] = nominee["synergy"]*nominee["counter"]
-    
-    nominees = sorted(nominees, key=lambda k: k["overall"], reverse = True) 
-    for nominee in nominees:
-        print(nominee["name"], nominee["synergy"], nominee["counter"], nominee["overall"])
-    #print(nominees)
-    
-    return nominees     
+        
         
                 
-def account_roles(A_side, B_side, A_ban = [], B_ban = []):
-    """
-    Accounts for roles in 5v5. Warning: Does not account for lane position
-    """
-    team_roles = {"Carry" : 3, "Captain" : 1, "Jungler" : 1}
     
-    if len(A_side)%2 == 0 or (len(A_side)%2 == 1 and len(B_side) > len(A_side)):
-        #A side
-        for name in A_side:
-            data = [hero for hero in API_rates if hero['name'] == name]
-            roles = data[0]["roles"]
-            for role in roles:            
-                team_roles[role] -= 1/len(roles)
-        print("A side", team_roles)
-
-    else:
-        #B side
-        for name in B_side:
-            data = [hero for hero in API_rates if hero['name'] == name]
-            roles = data[0]["roles"]
-            for role in roles:            
-                team_roles[role] -= 1/len(roles)
-        print("B side", team_roles)
-        
-    for hero in API_rates:
-        if (hero["name"] in A_side) or (hero["name"] in B_side) or (hero["name"] in A_ban) or (hero["name"] in B_ban) :
-            pass
-        else:
-            for role in hero["roles"]:
-                if team_roles[role] > 0:
-                    print(hero["roles"])
-                    return hero["name"]
-                else:
-                    pass
-    return "NIL"    
 
 
 

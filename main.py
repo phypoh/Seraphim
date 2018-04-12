@@ -147,6 +147,7 @@ def turn_time():
 
 @bot.command()
 async def pick(hero):
+    hero = hero.capitalize()
     if bot.AI_turn == 1:
         await bot.say("It's not your turn yet. Can't you be a little patient?")
     elif (hero in bot.A_side or hero in bot.B_side):
@@ -169,6 +170,7 @@ async def pick(hero):
         
 @bot.command()
 async def ban(hero):
+    hero = hero.capitalize()
     if len(bot.B_ban) >= 2:
         await bot.say("Stop cheating. You're only supposed to ban a maximum of 2 heroes.")
     if bot.AI_turn == 1:
@@ -233,6 +235,7 @@ def reset_draft():
 
 @bot.command()
 async def side(letter):
+    letter = letter.capitalize()
     if letter == "A":
         bot.side = 1
         await bot.say("Side has been set to A for player.")

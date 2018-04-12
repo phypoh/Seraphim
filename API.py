@@ -20,58 +20,23 @@ def pull_all():
     return data
     
 
-def pull_hero(hero):
-   link = os.getenv('API_LINK')
-   link += hero
-   response = requests.get(link)
-   data = response.json()
-   #print(data)
-   return data
+def pull_heroes():
+    all_heroes = {}
+    for hero in hero_list:
+        link = os.getenv('API_LINK')
+        link += hero
+        response = requests.get(link)
+        data = response.json()
+        all_heroes[hero] = data
+    return all_heroes
 
-#pull_hero("Adagio")
+def pull_hero(hero):
+    return all_heroes[hero]
+
+
 API_rates = pull_all()
 hero_list = [x["name"] for x in API_rates]
-
-
-hero_range =  {
- 'Adagio': 'ranged',
- 'Alpha': 'melee',
- 'Ardan': 'melee',
- 'Baptiste': 'melee',
- 'Baron': 'ranged',
- 'Blackfeather': 'melee',
- 'Catherine': 'melee',
- 'Celeste': 'ranged',
- 'Churnwalker': 'melee',
- 'Flicker': 'melee',
- 'Fortress': 'melee',
- 'Glaive': 'melee',
- 'Grace': 'melee',
- 'Grumpjaw': 'melee',
- 'Gwen': 'ranged',
- 'Idris': 'both',
- 'Joule': 'melee',
- 'Kestrel': 'ranged',
- 'Koshka': 'melee',
- 'Krul': 'melee',
- 'Lance': 'melee',
- 'Lorelai': 'ranged',
- 'Lyra': 'ranged',
- 'Ozo': 'melee',
- 'Petal': 'ranged',
- 'Phinn': 'melee',
- 'Reim': 'melee',
- 'Reza': 'melee',
- 'Ringo': 'ranged',
- 'Rona': 'melee',
- 'SAW': 'ranged',
- 'Samuel': 'ranged',
- 'Skaarf': 'ranged',
- 'Skye': 'ranged',
- 'Taka': 'melee',
- 'Tony': 'melee',
- 'Varya': 'ranged',
- 'Vox': 'ranged'}
+all_heroes = pull_heroes()
 
 
 

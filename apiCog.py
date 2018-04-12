@@ -37,7 +37,8 @@ class apiCog:
             num = "pickRate"
             output = "Pick Rates: \n"
         
-        for rate in self.bot.API_rates:
+        to_print = sorted(self.bot.API_rates, key=lambda k: k[num], reverse = True)
+        for rate in to_print:
             output += rate["name"] + ": " + str(rate[num]) + "% \n"
         await self.bot.say(output)
 

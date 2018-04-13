@@ -45,11 +45,23 @@ class apiCog:
     
     @commands.command()
     async def synergy(self, hero):
+        hero = hero.capitalize()
         synergy = pull_hero(hero)["playingWith"]
         synergy = sorted(synergy, key=lambda k: k["winRate"], reverse = True)
         output = ""
         for teammate in synergy:
             output += teammate["key"] + ": " + str(teammate["winRate"]) + "% \n"
+        await self.bot.say(output)
+        
+    @commands.command()
+    async def synratios(self,hero)
+        synergy = pull_hero(hero)["playingWith"]
+        synergy = sorted(synergy, key=lambda k: k["winRate"], reverse = True)
+        all_heroes = self.bot.API_rates
+        output = ""
+        for teammate in synergy:
+            overall_rate = next(item for item in dicts if item["name"] == teammate)
+            output += teammate["key"] + ": " + str(teammate["winRate"]/overall_rate["winRate") + "% \n"
         await self.bot.say(output)
         
 

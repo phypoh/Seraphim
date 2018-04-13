@@ -50,6 +50,7 @@ class apiCog:
         output = ""
         for teammate in synergy:
             output += teammate["key"] + ": " + str(teammate["winRate"]) + "% \n"
+        await self.bot.say(output)
         
 
 

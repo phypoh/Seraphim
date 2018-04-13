@@ -13,6 +13,7 @@ Created on Mon Apr  9 09:51:10 2018
 
 import discord
 from discord.ext import commands
+from API import pull_hero, pull_all
 
 
 class apiCog:
@@ -41,6 +42,15 @@ class apiCog:
         for rate in to_print:
             output += rate["name"] + ": " + str(rate[num]) + "% \n"
         await self.bot.say(output)
+    
+    @commands.command()
+    async def synergy(self, hero):
+        synergy = pull_hero(hero)["playingWith"]
+        synergy = sorted(synergy, key=lambda k: k["winRate"], reverse = True)
+        output = ""
+        for teammate in synergy:
+            output += teammate["key"] + ": " str(teammate["winRate"]) + "% \n"
+        
 
 
 def setup(bot):

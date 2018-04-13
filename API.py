@@ -37,6 +37,7 @@ def pull_hero(hero):
 API_rates = pull_all()
 hero_list = [x["name"] for x in API_rates]
 all_heroes = pull_heroes()
+print("API initialized")
 
 
 

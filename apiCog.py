@@ -61,7 +61,7 @@ class apiCog:
         output = ""
         for teammate in synergy:
             overall_rate = next(item for item in all_heroes if item["name"] == teammate["key"])
-            output += teammate["key"] + ": " + str(teammate["winRate"]/overall_rate["winRate"]) + "% \n"
+            output += teammate["key"] + ": " + str(teammate["winRate"]/overall_rate["winRate"])[:3] + " \n"
         await self.bot.say(output)
         
 

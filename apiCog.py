@@ -62,7 +62,7 @@ class apiCog:
         for teammate in synergy:
             overall_rate = next(item for item in all_heroes if item["name"] == teammate["key"])
             synergy_list.append([teammate["key"], teammate["winRate"]/overall_rate["winRate"]])
-        synergy_list.sort(key = lambda k: k[1], reverse = True)
+        synergy_list = sorted(synergy_list, key = lambda k: k[1], reverse = True)
         for row in synergy_list:
             output += row[0] + ": " + str(row[1])[:decimal + 2] + " \n"
         await self.bot.say(output)

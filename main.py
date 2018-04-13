@@ -173,7 +173,7 @@ async def ban(hero):
     hero = hero.capitalize()
     if len(bot.B_ban) >= 2:
         await bot.say("Stop cheating. You're only supposed to ban a maximum of 2 heroes.")
-    if bot.AI_turn == 1:
+    elif bot.AI_turn == 1:
         await bot.say("It's not your turn yet. Can't you be a little patient?")
     elif (hero in bot.A_ban or hero in bot.B_ban):
         await bot.say("Hero has already been banned. Ban another hero.")

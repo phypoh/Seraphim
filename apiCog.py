@@ -54,7 +54,7 @@ class apiCog:
         await self.bot.say(output)
         
     @commands.command()
-    async def synratios(self,hero, decimal= 3):
+    async def sr(self,hero, decimal= 3):
         synergy = pull_hero(hero)["playingWith"]
         all_heroes = self.bot.API_rates
         synergy_list = []

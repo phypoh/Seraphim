@@ -49,7 +49,7 @@ class apiCog:
         synergy = sorted(synergy, key=lambda k: k["winRate"], reverse = True)
         output = ""
         for teammate in synergy:
-            output += teammate["key"] + ": " str(teammate["winRate"]) + "% \n"
+            output += teammate["key"] + ": " + str(teammate["winRate"]) + "% \n"
         
 
 

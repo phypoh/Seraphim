@@ -31,7 +31,7 @@ def AI_ban(A_side, B_side, A_ban, B_ban):
 Picking algorithms
 """
 
-def auto_highest(A_side, B_side, A_ban = [], B_ban = []):
+def auto_highest(A_side, B_side, A_ban=[], B_ban=[]):
     for hero in API_rates:
         if (hero["name"] in A_side) or (hero["name"] in B_side) or (hero["name"] in A_ban) or (hero["name"] in B_ban) :
             pass
@@ -39,7 +39,7 @@ def auto_highest(A_side, B_side, A_ban = [], B_ban = []):
             return hero["name"]
     return "NIL"
 
-def ban_second_highest(A_side, B_side, A_ban = [], B_ban = []):
+def ban_second_highest(A_side, B_side, A_ban=[], B_ban=[]):
     """
     If AI takes A side, employs a passive ban on the second highest winrate hero
     so it can secure the highest winrate hero. Else, employ auto_highest ban
@@ -56,7 +56,7 @@ def ban_second_highest(A_side, B_side, A_ban = [], B_ban = []):
                 num = API_rates.index(hero)
                 
                 taken = 1
-                while (taken == 1):                    
+                while taken == 1:
                     num +=1
                     output = API_rates[num]["name"]
                     if output in A_ban or output in B_ban or output in A_side or output in B_side:
@@ -83,7 +83,7 @@ def eliminate_banned_picked(heroes, A_side, B_side, A_ban, B_ban):
     return heroes
 
 def count_roles(my_team, role_data):
-    team_roles = {"Carry" : 3, "Captain" : 1, "Jungler" : 1}
+    team_roles = {"Carry": 3, "Captain": 1, "Jungler": 1}
     for name in my_team:
         data = [hero for hero in role_data if hero['name'] == name]
         roles = data[0]["roles"]
@@ -110,7 +110,7 @@ def eliminate_by_role(heroes, team_roles):
     return heroes
     
 def count_range(my_team):
-    team_range = {"melee" : 3, "ranged" : 3}
+    team_range = {"melee": 3, "ranged": 3}
     for name in my_team:
         if hero_range[name] == "both":
             team_range["melee"] -= 0.5
@@ -133,7 +133,7 @@ def eliminate_by_range(heroes, team_range):
     return heroes
 
 def count_build(my_team):
-    team_build = {"CP" : 2, "WP" : 2}
+    team_build = {"CP": 2, "WP": 2}
     for hero in my_team:
         CP = 0
         WP = 0

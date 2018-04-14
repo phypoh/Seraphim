@@ -27,6 +27,10 @@ class apiCog:
     
     @commands.command()
     async def rates(self, ratename):
+        """
+        Winrates for heroes. Type !rates win, !rates ban, or !rates pick for the following rates!
+        """
+        
         output = ""
         if ratename == "win":
             num = "winRate"
@@ -55,6 +59,10 @@ class apiCog:
         
     @commands.command()
     async def sr(self,hero, decimal= 3):
+        """
+        Synergy Ratios. Index calculated using winrates: (teammate & hero)/teammate
+        """
+        
         synergy = pull_hero(hero)["playingWith"]
         all_heroes = self.bot.API_rates
         synergy_list = []
@@ -62,6 +70,23 @@ class apiCog:
         for teammate in synergy:
             overall_rate = next(item for item in all_heroes if item["name"] == teammate["key"])
             synergy_list.append([teammate["key"], teammate["winRate"]/overall_rate["winRate"]])
+        synergy_list = sorted(synergy_list, key = lambda k: k[1], reverse = True)
+        for row in synergy_list:
+            output += row[0] + ": " + str(row[1])[:decimal + 2] + " \n"
+        await self.bot.say(output)
+    
+    @commands.command()
+    async def srh(self,hero, decimal= 3):
+        """
+        Synergy Ratios. Index calculated using winrates: (teammate & hero)/hero
+        """
+        
+        synergy = pull_hero(hero)["playingWith"]
+        winrate = pull_hero(hero)["winRate"]
+        output = ""
+        synergy_list = []
+        for teammate in synergy:
+            synergy_list.append([teammate["key"], teammate["winRate"]/winrate])
         synergy_list = sorted(synergy_list, key = lambda k: k[1], reverse = True)
         for row in synergy_list:
             output += row[0] + ": " + str(row[1])[:decimal + 2] + " \n"

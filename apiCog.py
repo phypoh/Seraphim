@@ -21,7 +21,7 @@ class apiCog:
         self.bot = bot
 
     def orderbool(self, order):
-        if order == "ascending" or "a":
+        if order in {"ascending", "a", "Ascending", "A"}:
             return False
         else:
             return True
@@ -35,7 +35,7 @@ class apiCog:
     async def rates(self, ratename=None, order="descending"):
         output = ""
         if ratename is None:
-            await self.bot.say("Usage: rate [win/ban/pick]")
+            await self.bot.say("Usage: rates [win/ban/pick]")
         elif ratename == "win":
             num = "winRate"
             output = "Win Rates: \n"

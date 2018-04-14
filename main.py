@@ -71,6 +71,10 @@ async def reload(cog):
 #==============================================================================
 @bot.command()
 async def start():
+    """
+    Starts the draft. Competitive 5v5 format
+    """
+    
     await bot.say("Draft format: (Ban) ABAB (Pick) ABBAABBAAB")
     if bot.side == 1:
         await bot.say("Player side: A")
@@ -147,9 +151,14 @@ def turn_time():
 
 @bot.command()
 async def pick(hero):
+    """
+    Picks a hero
+    """
     hero = hero.capitalize()
     if bot.AI_turn == 1:
         await bot.say("It's not your turn yet. Can't you be a little patient?")
+    elif len(bot.B_ban) < 2:
+        await bot.say("Stop cheating. It's ban phase.")
     elif (hero in bot.A_side or hero in bot.B_side):
         await bot.say("Hero has alreay been picked. Pick another hero.")
     elif (hero in bot.A_ban or hero in bot.B_ban):
@@ -170,6 +179,9 @@ async def pick(hero):
         
 @bot.command()
 async def ban(hero):
+    """
+    Bans a hero
+    """
     hero = hero.capitalize()
     if len(bot.B_ban) >= 2:
         await bot.say("Stop cheating. You're only supposed to ban a maximum of 2 heroes.")
@@ -223,6 +235,9 @@ def print_log():
     
 @bot.command()
 async def reset():
+    """
+    Resets draft
+    """
     reset_draft()
     await bot.say("Draft entries have been reset.")
 
@@ -235,6 +250,9 @@ def reset_draft():
 
 @bot.command()
 async def side(letter):
+    """
+    Sets a side for the draft
+    """
     letter = letter.capitalize()
     if letter == "A":
         bot.side = 1
@@ -247,7 +265,11 @@ async def side(letter):
         await bot.say("Input unclear. Set side to either A or B")
         
 @bot.command()
-async def see_side():
+async def myside():
+    """
+    Checks what's your current side of the draft.
+    """
+    
     if bot.side == 1:
         await bot.say("Player is on A side.")
     elif bot.side == 0:
@@ -257,6 +279,9 @@ async def see_side():
 
 @bot.command()
 async def heroes():
+    """
+    Prints a list of heroes
+    """
     output = print_heroes()
     await bot.say(output)
 

@@ -15,7 +15,7 @@ import random
 from API import hero_list, pull_all
 from AI_algos import AI_ban, AI_pick
 
-bot = commands.Bot(command_prefix='?')
+bot = commands.Bot(command_prefix='!')
 
 bot.API_rates = pull_all()
 

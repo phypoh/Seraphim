@@ -152,7 +152,7 @@ async def pick(hero):
     """
     Picks a hero
     """
-    hero = hero.capitalize()
+    hero = hero.title()
     if bot.AI_turn == 1:
         await bot.say("It's not your turn yet. Can't you be a little patient?")
     elif len(bot.B_ban) < 2:
@@ -180,7 +180,7 @@ async def ban(hero):
     """
     Bans a hero
     """
-    hero = hero.capitalize()
+    hero = hero.title()
     if len(bot.B_ban) >= 2:
         await bot.say("Stop cheating. You're only supposed to ban a maximum of 2 heroes.")
     elif bot.AI_turn == 1:

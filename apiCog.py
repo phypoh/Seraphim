@@ -63,7 +63,7 @@ class apiCog:
         Winrates of two heroes combined.
         """
     async def synergy(self, hero, order="descending"):
-        hero = hero.capitalize()
+        hero = hero.title()
         reversebool = self.orderbool(order)
         synergy = pull_hero(hero)["playingWith"]
         synergy = sorted(synergy, key=lambda k: k["winRate"], reverse=reversebool)
@@ -79,7 +79,7 @@ class apiCog:
         """
         
     async def sr(self, hero, order="descending", decimal=3):
-        hero = hero.capitalize()
+        hero = hero.title()
         reversebool = self.orderbool(order)
         synergy = pull_hero(hero)["playingWith"]
         all_heroes = self.bot.API_rates

@@ -19,6 +19,7 @@ from API import pull_hero, pull_all
 class apiCog:
     def __init__(self, bot):
         self.bot = bot
+
     def orderbool(self, order):
         if order in {"ascending", "a", "Ascending", "A"}:
             return False
@@ -62,7 +63,7 @@ class apiCog:
         Winrates of two heroes combined.
         """
     async def synergy(self, hero, order="descending"):
-        hero = hero.capitalize()
+        hero = hero.title()
         reversebool = self.orderbool(order)
         synergy = pull_hero(hero)["playingWith"]
         synergy = sorted(synergy, key=lambda k: k["winRate"], reverse=reversebool)
@@ -78,7 +79,7 @@ class apiCog:
         """
         
     async def sr(self, hero, order="descending", decimal=3):
-        hero = hero.capitalize()
+        hero = hero.title()
         reversebool = self.orderbool(order)
         synergy = pull_hero(hero)["playingWith"]
         all_heroes = self.bot.API_rates
@@ -93,18 +94,18 @@ class apiCog:
         await self.bot.say(output)
     
     @commands.command()
-    async def srh(self,hero, decimal= 3):
+    async def srh(self,hero, order="descending", decimal= 3):
         """
         Synergy Ratios. (teammate & hero)/hero winrates
         """
-        
+        reversebool = self.orderbool(order)
         synergy = pull_hero(hero)["playingWith"]
         winrate = pull_hero(hero)["winRate"]
         output = ""
         synergy_list = []
         for teammate in synergy:
             synergy_list.append([teammate["key"], teammate["winRate"]/winrate])
-        synergy_list = sorted(synergy_list, key = lambda k: k[1], reverse = True)
+        synergy_list = sorted(synergy_list, key=lambda k: k[1], reverse=reversebool)
         for row in synergy_list:
             output += row[0] + ": " + str(row[1])[:decimal + 2] + " \n"
         await self.bot.say(output)

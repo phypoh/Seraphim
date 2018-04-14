@@ -46,7 +46,7 @@ class apiCog:
             num = "pickRate"
             output = "Pick Rates: \n"
 
-        reversebool = self.bot.orderbool(order)
+        reversebool = self.orderbool(order)
         to_print = sorted(self.bot.API_rates, key=lambda k: k[num], reverse=reversebool)
         for rate in to_print:
             output += rate["name"] + ": " + str(rate[num]) + "% \n"

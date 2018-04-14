@@ -16,9 +16,9 @@ def pull_all():
     link = os.getenv('API_LINK')
     response = requests.get(link)
     data = response.json()
-    data = sorted(data, key=lambda k: k['winRate'], reverse=True)
+    data = sorted(data, key=lambda k: k['winRate'], reverse = True)
     return data
-
+    
 
 def pull_heroes():
     all_heroes = {}

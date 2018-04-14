@@ -13,3 +13,4 @@ __pycache__/
 .idea/**/tasks.xml
 .idea/**/dictionaries
 .idea/**/shelf
+*.xml

@@ -46,7 +46,7 @@ class apiCog:
             num = "pickRate"
             output = "Pick Rates: \n"
 
-        reversebool = orderbool(order)
+        reversebool = self.orderbool(order)
         to_print = sorted(self.bot.API_rates, key=lambda k: k[num], reverse=reversebool)
         for rate in to_print:
             output += rate["name"] + ": " + str(rate[num]) + "% \n"
@@ -55,7 +55,7 @@ class apiCog:
     @commands.command()
     async def synergy(self, hero, order="descending"):
         hero = hero.capitalize()
-        reversebool = orderbool(order)
+        reversebool = self.orderbool(order)
         synergy = pull_hero(hero)["playingWith"]
         synergy = sorted(synergy, key=lambda k: k["winRate"], reverse=reversebool)
         output = ""
@@ -66,7 +66,7 @@ class apiCog:
     @commands.command()
     async def sr(self, hero, order="descending", decimal=3):
         hero = hero.capitalize()
-        reversebool = orderbool(order)
+        reversebool = self.orderbool(order)
         synergy = pull_hero(hero)["playingWith"]
         all_heroes = self.bot.API_rates
         synergy_list = []

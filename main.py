@@ -7,8 +7,6 @@
 # @author: phypoh
 #==============================================================================
 
-
-# https://discordapp.com/oauth2/authorize?client_id=341929737557508096&scope=bot
 import os
 #import datetime  
 import discord
@@ -17,7 +15,7 @@ import random
 from API import hero_list, pull_all
 from AI_algos import AI_ban, AI_pick
 
-bot = commands.Bot(command_prefix='?')
+bot = commands.Bot(command_prefix='?', case_insensitive=True)
 
 bot.API_rates = pull_all()
 

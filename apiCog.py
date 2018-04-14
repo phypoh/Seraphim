@@ -36,7 +36,6 @@ class apiCog:
         output = ""
         if ratename is None:
             await self.bot.say("Usage: rate [win/ban/pick]")
-            break
         elif ratename == "win":
             num = "winRate"
             output = "Win Rates: \n"

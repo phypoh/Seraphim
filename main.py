@@ -7,8 +7,6 @@
 # @author: phypoh
 #==============================================================================
 
-
-# https://discordapp.com/oauth2/authorize?client_id=341929737557508096&scope=bot
 import os
 #import datetime  
 import discord
@@ -17,7 +15,7 @@ import random
 from API import hero_list, pull_all
 from AI_algos import AI_ban, AI_pick
 
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix='?')
 
 bot.API_rates = pull_all()
 
@@ -154,7 +152,7 @@ async def pick(hero):
     """
     Picks a hero
     """
-    hero = hero.capitalize()
+    hero = hero.title()
     if bot.AI_turn == 1:
         await bot.say("It's not your turn yet. Can't you be a little patient?")
     elif len(bot.B_ban) < 2:
@@ -182,7 +180,7 @@ async def ban(hero):
     """
     Bans a hero
     """
-    hero = hero.capitalize()
+    hero = hero.title()
     if len(bot.B_ban) >= 2:
         await bot.say("Stop cheating. You're only supposed to ban a maximum of 2 heroes.")
     elif bot.AI_turn == 1:

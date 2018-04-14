@@ -13,6 +13,7 @@ Created on Mon Apr  9 09:51:10 2018
 
 import discord
 from discord.ext import commands
+import random
 
 
 class extraCog:

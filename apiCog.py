@@ -93,18 +93,18 @@ class apiCog:
         await self.bot.say(output)
     
     @commands.command()
-    async def srh(self,hero, decimal= 3):
+    async def srh(self,hero, order="descending", decimal= 3):
         """
         Synergy Ratios. (teammate & hero)/hero winrates
         """
-        
+        reversebool = self.orderbool(order)
         synergy = pull_hero(hero)["playingWith"]
         winrate = pull_hero(hero)["winRate"]
         output = ""
         synergy_list = []
         for teammate in synergy:
             synergy_list.append([teammate["key"], teammate["winRate"]/winrate])
-        synergy_list = sorted(synergy_list, key = lambda k: k[1], reverse = True)
+        synergy_list = sorted(synergy_list, key=lambda k: k[1], reverse=reversebool)
         for row in synergy_list:
             output += row[0] + ": " + str(row[1])[:decimal + 2] + " \n"
         await self.bot.say(output)

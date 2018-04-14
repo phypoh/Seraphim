@@ -28,7 +28,7 @@ class apiCog:
     @commands.command()
     async def rates(self, ratename):
         """
-        Winrates for heroes. Type !rates win, !rates ban, or !rates pick for the following rates!
+        Type !rates win, !rates ban, or !rates pick for the following rates
         """
         
         output = ""
@@ -49,6 +49,9 @@ class apiCog:
     
     @commands.command()
     async def synergy(self, hero):
+        """
+        Winrates of two heroes combined.
+        """
         hero = hero.capitalize()
         synergy = pull_hero(hero)["playingWith"]
         synergy = sorted(synergy, key=lambda k: k["winRate"], reverse = True)
@@ -60,7 +63,7 @@ class apiCog:
     @commands.command()
     async def sr(self,hero, decimal= 3):
         """
-        Synergy Ratios. Index calculated using winrates: (teammate & hero)/teammate
+        Synergy Ratios. (teammate & hero)/teammate winrates
         """
         
         synergy = pull_hero(hero)["playingWith"]
@@ -78,7 +81,7 @@ class apiCog:
     @commands.command()
     async def srh(self,hero, decimal= 3):
         """
-        Synergy Ratios. Index calculated using winrates: (teammate & hero)/hero
+        Synergy Ratios. (teammate & hero)/hero winrates
         """
         
         synergy = pull_hero(hero)["playingWith"]

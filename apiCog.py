@@ -19,6 +19,7 @@ from API import pull_hero, pull_all
 class apiCog:
     def __init__(self, bot):
         self.bot = bot
+
     def orderbool(self, order):
         if order in {"ascending", "a", "Ascending", "A"}:
             return False

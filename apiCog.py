@@ -58,11 +58,10 @@ class apiCog:
         await self.bot.say(output)
     
     @commands.command()
-    async def synergy(self, hero):
+    async def synergy(self, hero, order="descending"):
         """
         Winrates of two heroes combined.
         """
-    async def synergy(self, hero, order="descending"):
         hero = hero.title()
         reversebool = self.orderbool(order)
         synergy = pull_hero(hero)["playingWith"]

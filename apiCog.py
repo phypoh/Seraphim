@@ -73,12 +73,10 @@ class apiCog:
         await self.bot.say(output)
         
     @commands.command()
-    async def sr(self,hero, decimal= 3):
+    async def sr(self, hero, order="descending", decimal=3):
         """
         Synergy Ratios. (teammate & hero)/teammate winrates
         """
-        
-    async def sr(self, hero, order="descending", decimal=3):
         hero = hero.title()
         reversebool = self.orderbool(order)
         synergy = pull_hero(hero)["playingWith"]

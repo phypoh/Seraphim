@@ -29,15 +29,13 @@ class apiCog:
     @commands.command()
     async def update(self):
         self.bot.API_rates = pull_all()
-        await self.bot.say("API updated. Cheers, VGpro")
+        await self.bot.say("API updated. Cheers, 4ever")
     
     @commands.command()
-    async def rates(self, ratename):
+    async def rates(self, ratename=None, order="descending"):
         """
         Type !rates win, !rates ban, or !rates pick for the following rates
         """
-        
-    async def rates(self, ratename=None, order="descending"):
         output = ""
         if ratename is None:
             await self.bot.say("Usage: rates [win/ban/pick]")

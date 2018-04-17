@@ -116,7 +116,7 @@ class apiCog:
         
     @commands.command()
     async def tteam(self, team):
-        team = team.title()
+        team = team.lower()
         data = tourney_team(team)
         output = ""
         for row in data:
@@ -125,7 +125,6 @@ class apiCog:
         
     @commands.command()
     async def tplayer(self, player):
-        player = player.title()
         data = tourney_player(player)
         output = ""
         for row in data:

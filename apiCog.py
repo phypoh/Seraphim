@@ -13,7 +13,7 @@ Created on Mon Apr  9 09:51:10 2018
 
 import discord
 from discord.ext import commands
-from API import pull_hero, pull_all
+from API import pull_hero, pull_all, tourney_hero, tourney_team, tourney_player
 
 
 class apiCog:
@@ -105,6 +105,34 @@ class apiCog:
             output += row[0] + ": " + str(row[1])[:decimal + 2] + " \n"
         await self.bot.say(output)
         
+    @commands.command()
+    async def thero(self, hero):
+        hero = hero.title()
+        data = tourney_hero(hero)
+        output = ""
+        for row in data:
+            output += row + ": " + str(data[row])
+        await self.bot.say(output)
+        
+    @commands.command()
+    async def tteam(self, team):
+        team = team.title()
+        data = tourney_team(team)
+        output = ""
+        for row in data:
+            output += row + ": " + str(data[row])
+        await self.bot.say(output)
+        
+    @commands.command()
+    async def tplayer(self, player):
+        player = player.title()
+        data = tourney_player(player)
+        output = ""
+        for row in data:
+            output += row + ": " + str(data[row])
+        await self.bot.say(output)
+            
+
 
 
 def setup(bot):

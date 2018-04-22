@@ -30,6 +30,7 @@ hero_range =  {
  'Lance': 'melee',
  'Lorelai': 'ranged',
  'Lyra': 'ranged',
+ 'Malene': 'ranged',
  'Ozo': 'melee',
  'Petal': 'ranged',
  'Phinn': 'melee',

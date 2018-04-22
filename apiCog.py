@@ -8,7 +8,7 @@ Created on Mon Apr  9 09:51:10 2018
 
 
 #==============================================================================
-# MISC COMMANDS
+# API COMMANDS
 #==============================================================================
 
 import discord
@@ -111,25 +111,24 @@ class apiCog:
         data = tourney_hero(hero)
         output = ""
         for row in data:
-            output += row + ": " + str(data[row])
-        await self.bot.say(output)
+            output += row + ": " + str(data[row]) + "\n"
+        await self.bot.say(output) 
         
     @commands.command()
     async def tteam(self, team):
-        team = team.title()
+        team = team.lower()
         data = tourney_team(team)
         output = ""
         for row in data:
-            output += row + ": " + str(data[row])
+            output += row + ": " + str(data[row]) + "\n"
         await self.bot.say(output)
         
     @commands.command()
     async def tplayer(self, player):
-        player = player.title()
         data = tourney_player(player)
         output = ""
         for row in data:
-            output += row + ": " + str(data[row])
+            output += row + ": " + str(data[row]) + "\n"
         await self.bot.say(output)
             
 

@@ -20,18 +20,27 @@ def pull_all():
     return data
 
 
-def pull_heroes():
-    all_heroes = {}
-    for hero in hero_list:
-        link = os.getenv('API_LINK')
-        link += hero
-        response = requests.get(link)
-        data = response.json()
-        all_heroes[hero] = data
-    return all_heroes
+#==============================================================================
+# def pull_heroes():
+#     all_heroes = {}
+#     for hero in hero_list:
+#         link = os.getenv('API_LINK')
+#         link += hero
+#         response = requests.get(link)
+#         data = response.json()
+#         all_heroes[hero] = data
+#     return all_heroes
+# 
+# def pull_hero(hero):
+#     return all_heroes[hero]
+#==============================================================================
 
 def pull_hero(hero):
-    return all_heroes[hero]
+    link = os.getenv('API_LINK')
+    link += hero
+    response = requests.get(link)
+    data = response.json()
+    return data
 
 def tourney_hero(hero):
     link = os.getenv('TOURNEY_LINK')

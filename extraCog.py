@@ -33,6 +33,10 @@ class extraCog:
         choose = ["Tacchan", "Onii Sama", "Raccoon"]
         output = random.choice(choose) + " is potato"
         await self.bot.say(output)
+        
+    @commands.command(pass_context=True)
+    async def server(self, ctx):
+        await self.bot.say(ctx.message.server.id)
 
 def setup(bot):
     bot.add_cog(extraCog(bot))

@@ -82,7 +82,10 @@ async def start():
     if bot.side == 0:
         await bot.say("Player side: B")
     
-    bot = reset_draft(bot)
+    bot.A_ban = []
+    bot.B_ban = []
+    bot.A_side = []
+    bot.B_side = []
     
     bot.AI_turn = bot.side
     turn_time()

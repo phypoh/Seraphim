@@ -12,7 +12,7 @@ import discord
 from discord.ext import commands
 from API import hero_list, pull_all
 from AI_algos import AI_ban, AI_pick
-from utils import print_log
+from utils import print_log, reset_draft
 
 bot = commands.Bot(command_prefix='!')
 
@@ -82,10 +82,7 @@ async def start():
     if bot.side == 0:
         await bot.say("Player side: B")
     
-    bot.A_ban = []
-    bot.B_ban = []
-    bot.A_side = []
-    bot.B_side = []
+    bot = reset_draft(bot)
     
     bot.AI_turn = bot.side
     turn_time()
@@ -208,25 +205,6 @@ async def ban(hero):
             await bot.say("Player has banned " + hero)
         output = turn_check()
         await bot.say(output)
-
-
-def print_log():
-    output = "A Bans: "
-    for ban in bot.A_ban:
-        output += ban + " "
-
-    output += "\nB Bans: "
-    for ban in bot.B_ban:
-        output += ban + " "
-
-    output += "\nA Picks: "
-    for pick in bot.A_side:
-        output += pick + " "
-
-    output += "\nB Picks: "
-    for pick in bot.B_side:
-        output += pick + " "    
-    return output
 
 bot.run(os.getenv('BOT_TOKEN'))
 

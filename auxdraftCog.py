@@ -31,12 +31,6 @@ class auxdraftCog:
         """
         Resets draft
         """
-#==============================================================================
-#         self.bot.A_ban = []
-#         self.bot.B_ban = []
-#         self.bot.A_side = []
-#         self.bot.B_side = []
-#==============================================================================
         self.bot = reset_draft(self.bot)
         await self.bot.say("Draft entries have been reset.")
     

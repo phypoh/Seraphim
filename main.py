@@ -12,6 +12,7 @@ import discord
 from discord.ext import commands
 from API import hero_list, pull_all
 from AI_algos import AI_ban, AI_pick
+from utils import print_log
 
 bot = commands.Bot(command_prefix='!')
 

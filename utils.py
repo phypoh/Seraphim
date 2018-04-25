@@ -20,3 +20,10 @@ def print_log(bot):
     for pick in bot.B_side:
         output += pick + " "   
     return output
+
+def reset_draft(bot):
+    bot.A_ban = []
+    bot.B_ban = []
+    bot.A_side = []
+    bot.B_side = []
+    return bot

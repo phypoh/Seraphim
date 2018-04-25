@@ -11,7 +11,7 @@ from discord.ext import commands
 
 from API import hero_list, pull_all
 from AI_algos import AI_ban, AI_pick
-from utils import print_log
+from utils import print_log, reset_draft
 
 class auxdraftCog:
     """
@@ -31,10 +31,13 @@ class auxdraftCog:
         """
         Resets draft
         """
-        self.bot.A_ban = []
-        self.bot.B_ban = []
-        self.bot.A_side = []
-        self.bot.B_side = []
+#==============================================================================
+#         self.bot.A_ban = []
+#         self.bot.B_ban = []
+#         self.bot.A_side = []
+#         self.bot.B_side = []
+#==============================================================================
+        self.bot = reset_draft(self.bot)
         await self.bot.say("Draft entries have been reset.")
     
     @commands.command()

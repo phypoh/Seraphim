@@ -27,7 +27,7 @@ bot.side = 1
 @bot.event
 async def on_ready():
     bot.load_extension("timeCog")
-    print("timeCog loaded")
+    print("imeCog loaded")
     
     bot.load_extension("extraCog")
     print("extraCog loaded")
@@ -209,6 +209,23 @@ async def ban(hero):
         await bot.say(output)
 
 
+def print_log():
+    output = "A Bans: "
+    for ban in bot.A_ban:
+        output += ban + " "
+
+    output += "\nB Bans: "
+    for ban in bot.B_ban:
+        output += ban + " "
+
+    output += "\nA Picks: "
+    for pick in bot.A_side:
+        output += pick + " "
+
+    output += "\nB Picks: "
+    for pick in bot.B_side:
+        output += pick + " "    
+    return output
 
 bot.run(os.getenv('BOT_TOKEN'))
 

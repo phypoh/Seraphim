@@ -11,6 +11,7 @@ from discord.ext import commands
 
 from API import hero_list, pull_all
 from AI_algos import AI_ban, AI_pick
+from utils import print_log
 
 class auxdraftCog:
     """
@@ -22,21 +23,7 @@ class auxdraftCog:
         
     @commands.command()
     async def log(self):
-        output = "A Bans: "
-        for ban in self.bot.A_ban:
-            output += ban + " "
-    
-        output += "\nB Bans: "
-        for ban in self.bot.B_ban:
-            output += ban + " "
-    
-        output += "\nA Picks: "
-        for pick in self.bot.A_side:
-            output += pick + " "
-    
-        output += "\nB Picks: "
-        for pick in self.bot.B_side:
-            output += pick + " "        
+        output = print_log(self.bot)
         await self.bot.say(output)
         
     @commands.command()

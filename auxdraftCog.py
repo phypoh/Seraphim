@@ -22,10 +22,6 @@ class auxdraftCog:
         
     @commands.command()
     async def log(self):
-        output = print_log()
-        await self.bot.say(output)
-        
-    def print_log():
         output = "A Bans: "
         for ban in self.bot.A_ban:
             output += ban + " "
@@ -41,7 +37,7 @@ class auxdraftCog:
         output += "\nB Picks: "
         for pick in self.bot.B_side:
             output += pick + " "        
-        return output
+        await self.bot.say(output)
         
     @commands.command()
     async def reset(self):
@@ -94,5 +90,7 @@ class auxdraftCog:
             output += hero + ", "
 
         await self.bot.say(output)
-    
+
+def setup(bot):
+    bot.add_cog(auxdraftCog(bot))
         

@@ -27,7 +27,7 @@ bot.side = 1
 @bot.event
 async def on_ready():
     bot.load_extension("timeCog")
-    print("TimeCog loaded")
+    print("timeCog loaded")
     
     bot.load_extension("extraCog")
     print("extraCog loaded")

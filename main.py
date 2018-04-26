@@ -129,7 +129,7 @@ def turn_check():
                 turn_time()
                 output += turn_check()
     elif len(bot.B_side) == 5:
-        output += print_log()        
+        output += print_log(bot)        
     return output
      
 def turn_time():

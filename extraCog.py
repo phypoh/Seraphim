@@ -43,7 +43,7 @@ class extraCog:
     async def push(self, ctx, store):
         self.bot.data[ctx.message.server.id] = store
         output = "Value " + store + "stored under " + str(ctx.message.server.id)
-        await self.bot.say(ctx.message.server.id)
+        await self.bot.say(output)
 
     @commands.command(pass_context=True)
     async def pull(self, ctx):

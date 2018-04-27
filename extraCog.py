@@ -19,6 +19,7 @@ import random
 class extraCog:
     def __init__(self, bot):
         self.bot = bot
+        self.bot.data = {}
         
     @commands.command()
     async def ping(self):
@@ -37,6 +38,19 @@ class extraCog:
     @commands.command(pass_context=True)
     async def server(self, ctx):
         await self.bot.say(ctx.message.server.id)
+
+    @commands.command(pass_context=True)
+    async def save(self, ctx, store):
+        self.bot.data[ctx.message.server.id] = store
+        output = "Value " + store + "stored under " + str(ctx.message.server.id)
+        await self.bot.say(ctx.message.server.id)
+
+    @commands.command(pass_context=True)
+    async def load(self, ctx):
+        output = self.bot.data[ctx.message.server.id]
+        await self.bot.say(output)
+
+
 
 def setup(bot):
     bot.add_cog(extraCog(bot))

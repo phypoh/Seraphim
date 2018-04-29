@@ -20,65 +20,65 @@ class draftCog:
         self.bot = bot
         
         def turn_check(self):
-        output = ""
+            output = ""
     
-        if len(self.bot.B_ban) < 2:
-            if self.bot.AI_turn == 0:
-                output += "Ban a hero"
-                return output
-            elif self.bot.AI_turn == 1:
-                chosen_hero = AI_ban(self.bot.A_side, self.bot.B_side, self.bot.A_ban, self.bot.B_ban)
-                if self.bot.side == 0:
-                    self.bot.A_ban.append(chosen_hero)
-                    output += "AI has banned " + chosen_hero + "\n"
-                    turn_time()
-                    output += turn_check()
-                elif self.bot.side == 1:
-                    self.bot.B_ban.append(chosen_hero)
-                    output += "AI has banned " + chosen_hero + "\n"
-                    turn_time()
-                    output += turn_check()
-                    
-        elif len(self.bot.B_side) < 5:
-            if self.bot.AI_turn == 0:
-                output += "Pick a hero"
-                return output
-            elif self.bot.AI_turn == 1:
-                chosen_hero = AI_pick(self.bot.A_side, self.bot.B_side, self.bot.A_ban, self.bot.B_ban)
-                if self.bot.side == 0:
-                    self.bot.A_side.append(chosen_hero)
-                    output += "AI has selected " + chosen_hero + "\n"
-                    turn_time()
-                    output += turn_check()
-                elif self.bot.side == 1:
-                    self.bot.B_side.append(chosen_hero)
-                    output += "AI has selected " + chosen_hero + "\n"
-                    turn_time()
-                    output += turn_check()
-        elif len(self.bot.B_side) == 5:
-            output += print_log(self.bot)        
-        return output
+            if len(self.bot.B_ban) < 2:
+                if self.bot.AI_turn == 0:
+                    output += "Ban a hero"
+                    return output
+                elif self.bot.AI_turn == 1:
+                    chosen_hero = AI_ban(self.bot.A_side, self.bot.B_side, self.bot.A_ban, self.bot.B_ban)
+                    if self.bot.side == 0:
+                        self.bot.A_ban.append(chosen_hero)
+                        output += "AI has banned " + chosen_hero + "\n"
+                        turn_time()
+                        output += turn_check()
+                    elif self.bot.side == 1:
+                        self.bot.B_ban.append(chosen_hero)
+                        output += "AI has banned " + chosen_hero + "\n"
+                        turn_time()
+                        output += turn_check()
+                        
+            elif len(self.bot.B_side) < 5:
+                if self.bot.AI_turn == 0:
+                    output += "Pick a hero"
+                    return output
+                elif self.bot.AI_turn == 1:
+                    chosen_hero = AI_pick(self.bot.A_side, self.bot.B_side, self.bot.A_ban, self.bot.B_ban)
+                    if self.bot.side == 0:
+                        self.bot.A_side.append(chosen_hero)
+                        output += "AI has selected " + chosen_hero + "\n"
+                        turn_time()
+                        output += turn_check()
+                    elif self.bot.side == 1:
+                        self.bot.B_side.append(chosen_hero)
+                        output += "AI has selected " + chosen_hero + "\n"
+                        turn_time()
+                        output += turn_check()
+            elif len(self.bot.B_side) == 5:
+                output += print_log(self.bot)        
+            return output
 
-            def turn_time(self):
-        if len(self.bot.B_ban) < 2:
-            self.bot.AI_turn = (self.bot.AI_turn+1)%2 
-            
-        elif len(self.bot.B_side) < 5:
-            #If it's A's turn now
-            if (len(self.bot.A_side)%2 == 0 or (len(self.bot.A_side)%2 == 1 and len(self.bot.B_side) > len(self.bot.A_side))):
-                if self.bot.side == 0:
-                    self.bot.AI_turn = 1
+        def turn_time(self):
+            if len(self.bot.B_ban) < 2:
+                self.bot.AI_turn = (self.bot.AI_turn+1)%2 
+                
+            elif len(self.bot.B_side) < 5:
+                #If it's A's turn now
+                if (len(self.bot.A_side)%2 == 0 or (len(self.bot.A_side)%2 == 1 and len(self.bot.B_side) > len(self.bot.A_side))):
+                    if self.bot.side == 0:
+                        self.bot.AI_turn = 1
+                    else:
+                        self.bot.AI_turn = 0
+                        
+                #If it's B's turn now
                 else:
-                    self.bot.AI_turn = 0
-                    
-            #If it's B's turn now
+                    if self.bot.side == 1:
+                        self.bot.AI_turn = 1
+                    else:
+                        self.bot.AI_turn = 0
             else:
-                if self.bot.side == 1:
-                    self.bot.AI_turn = 1
-                else:
-                    self.bot.AI_turn = 0
-        else:
-            self.bot.AI_turn = 2
+                self.bot.AI_turn = 2
 
     @commands.command()
     async def start(self):

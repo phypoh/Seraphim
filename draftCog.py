@@ -11,36 +11,15 @@ from discord.ext import commands
 
 from API import hero_list, pull_all
 from AI_algos import AI_ban, AI_pick
+from utils import print_log, reset_draft
 
 
 
 class draftCog:
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.command()
-    async def start(self):
-        """
-        Starts the draft. Competitive 5v5 format
-        """
         
-        await self.bot.say("Draft format: (Ban) ABAB (Pick) ABBAABBAAB")
-        if self.bot.side == 1:
-            await self.bot.say("Player side: A")
-        if self.bot.side == 0:
-            await self.bot.say("Player side: B")
-        
-        self.bot.A_ban = []
-        self.bot.B_ban = []
-        self.bot.A_side = []
-        self.bot.B_side = []
-        
-        self.bot.AI_turn = self.bot.side
-        turn_time()
-        output = turn_check()
-        await self.bot.say(output)
-    
-    def turn_check(self):
+        def turn_check(self):
         output = ""
     
         if len(self.bot.B_ban) < 2:
@@ -79,8 +58,8 @@ class draftCog:
         elif len(self.bot.B_side) == 5:
             output += print_log(self.bot)        
         return output
-         
-    def turn_time(self):
+
+            def turn_time(self):
         if len(self.bot.B_ban) < 2:
             self.bot.AI_turn = (self.bot.AI_turn+1)%2 
             
@@ -100,8 +79,28 @@ class draftCog:
                     self.bot.AI_turn = 0
         else:
             self.bot.AI_turn = 2
-            
+
+    @commands.command()
+    async def start(self):
+        """
+        Starts the draft. Competitive 5v5 format
+        """
         
+        await self.bot.say("Draft format: (Ban) ABAB (Pick) ABBAABBAAB")
+        if self.bot.side == 1:
+            await self.bot.say("Player side: A")
+        if self.bot.side == 0:
+            await self.bot.say("Player side: B")
+        
+        self.bot.A_ban = []
+        self.bot.B_ban = []
+        self.bot.A_side = []
+        self.bot.B_side = []
+        
+        self.bot.AI_turn = self.bot.side
+        turn_time()
+        output = turn_check()
+        await self.bot.say(output)            
     
     @commands.command()
     async def pick(self, hero):

@@ -87,7 +87,7 @@ async def start(ctx):
     if data["side"] == 0:
         await bot.say("Player side: B")
     
-    bot.AI_turn = data["side"]
+    data["AI_turn"] = data["side"]
     turn_time(data)
     output = turn_check(data)
 
@@ -121,7 +121,7 @@ def id_to_dict_clear(id):
 def turn_check(data):
     output = ""
 
-    if len(data["B_ban"]) < 2:
+    if len(data["B_ban"]) < 2:  # TODO
         if data["AI_turn"] == 0:
             output += "Ban a hero"
             return output

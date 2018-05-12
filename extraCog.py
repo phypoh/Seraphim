@@ -50,7 +50,7 @@ class extraCog:
         output = self.bot.data[ctx.message.server.id]
         await self.bot.say(output)
 
-    @commands.command(pass_context=True):
+    @commands.command(pass_context=True)
     async def id(self, ctx):
         await self.bot.say(ctx.message.author.id)
 

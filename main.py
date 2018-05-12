@@ -80,9 +80,10 @@ async def start(ctx):
     """
     global ids
     global draft_dict
+    id = ctx.message.author.id
 
     # Clears the draft data since you are starting a new draft
-    data = id_to_dict_clear(ctx.message.author.id)
+    data = id_to_dict_clear(id)
 
     await bot.say("Draft format: (Ban) ABAB (Pick) ABBAABBAAB")
     if data["side"] == 1:
@@ -91,8 +92,8 @@ async def start(ctx):
         await bot.say("Player side: B")
     
     data["AI_turn"] = data["side"]
-    turn_time(data)
-    output = turn_check(data)
+    turn_time(id)
+    output = turn_check(id)
 
     await bot.say(output)
 
@@ -116,6 +117,7 @@ def id_to_dict_clear(id):
     """
     global ids
     global draft_dict
+
     draft_dict[id] = {
         "A_ban": [],
         "B_ban": [],
@@ -126,7 +128,12 @@ def id_to_dict_clear(id):
     }
     return draft_dict[id]
 
-def turn_check(data):
+def turn_check(id):
+    global ids
+    global draft_dict
+
+    data = id_to_dict(id)
+
     output = ""
 
     if len(data["B_ban"]) < 2:  # TODO
@@ -138,13 +145,13 @@ def turn_check(data):
             if data["side"] == 0:
                 data["A_ban"].append(chosen_hero)
                 output += "AI has banned " + chosen_hero + "\n"
-                data = turn_time(data)
-                output += turn_check(data)
+                turn_time(id)
+                output += turn_check(id)
             elif data["side"] == 1:
                 data["B_ban"].append(chosen_hero)
                 output += "AI has banned " + chosen_hero + "\n"
-                data = turn_time(data)
-                output += turn_check(data)
+                turn_time(id)
+                output += turn_check(id)
                 
     elif len(data["B_side"]) < 5:
         if data["AI_turn"] == 0:
@@ -155,19 +162,24 @@ def turn_check(data):
             if data["side"] == 0:
                 data["A_side"].append(chosen_hero)
                 output += "AI has selected " + chosen_hero + "\n"
-                data = turn_time(data)
-                output += turn_check(data)
+                turn_time(id)
+                output += turn_check(id)
             elif data["side"] == 1:
                 data["B_side"].append(chosen_hero)
                 output += "AI has selected " + chosen_hero + "\n"
-                data = turn_time(data)
-                output += turn_check(data)
+                turn_time(id)
+                output += turn_check(id)
     elif len(data["B_side"]) == 5:
         output += print_log(bot)
 
     return output
      
-def turn_time(data):
+def turn_time(id):
+    global ids
+    global draft_dict
+
+    data = id_to_dict(id)
+
     if len(data["B_ban"]) < 2:
         data["AI_turn"] = (data["AI_turn"]+1)%2
         
@@ -197,7 +209,8 @@ async def pick(ctx, *, hero):
     global ids
     global draft_dict
 
-    data = id_to_dict(ctx.message.author.id)
+    id = ctx.message.author.id
+    data = id_to_dict(id)
 
     hero = hero.title()
     if data["AI_turn"] == 1:
@@ -213,13 +226,13 @@ async def pick(ctx, *, hero):
     else:
         if data["side"] == 1:
             data["A_side"].append(hero)
-            data = turn_time(data)
+            turn_time(id)
             await bot.say("Player has selected " + hero)
         elif bot.side == 0:
             data["B_side"].append(hero)
-            data = turn_time(data)
+            turn_time(id)
             await bot.say("Player has selected " + hero)
-        output = turn_check(data)
+        output = turn_check(id)
         await bot.say(output)
         
 @bot.command(pass_context=True)
@@ -229,8 +242,9 @@ async def ban(ctx, *, hero):
     """
     global ids
     global draft_dict
-    
-    data = id_to_dict(ctx.message.author.id)
+
+    id = ctx.message.author.id
+    data = id_to_dict(id)
 
     hero = hero.title()
     if len(data["B_ban"]) >= 2:
@@ -244,13 +258,13 @@ async def ban(ctx, *, hero):
     else:
         if data["side"] == 1:
             data["A_ban"].append(hero)
-            data = turn_time(data)
+            turn_time(id)
             await bot.say("Player has banned " + hero)
         elif bot.side == 0:
             data["B_ban"].append(hero)
-            data = turn_time(data)
+            turn_time(id)
             await bot.say("Player has banned " + hero)
-        output = turn_check(data)
+        output = turn_check(id)
         await bot.say(output)
 
 bot.run(os.getenv('BOT_TOKEN'))

@@ -227,11 +227,11 @@ async def pick(ctx, *, hero):
         if data["side"] == 1:
             data["A_side"].append(hero)
             turn_time(id)
-            await bot.say("Player has selected " + hero)
+            await bot.say(f"{ctx.message.author.nick} has selected {hero}")
         elif bot.side == 0:
             data["B_side"].append(hero)
             turn_time(id)
-            await bot.say("Player has selected " + hero)
+            await bot.say(f"{ctx.message.author.nick} has selected {hero}")
         output = turn_check(id)
         await bot.say(output)
         
@@ -259,11 +259,11 @@ async def ban(ctx, *, hero):
         if data["side"] == 1:
             data["A_ban"].append(hero)
             turn_time(id)
-            await bot.say("Player has banned " + hero)
+            await bot.say(f"{ctx.message.author.nick} has banned {hero}")
         elif bot.side == 0:
             data["B_ban"].append(hero)
             turn_time(id)
-            await bot.say("Player has banned " + hero)
+            await bot.say(f"{ctx.message.author.nick} has banned {hero}")
         output = turn_check(id)
         await bot.say(output)
 

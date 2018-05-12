@@ -223,11 +223,11 @@ async def pick(ctx, *, hero):
     elif len(data["B_ban"]) < 2:
         await bot.say("Stop cheating. It's ban phase.")
     elif (hero in data["A_side"] or hero in data["B_side"]):
-        await bot.say("Hero has already been picked. Pick another hero.")
+        await bot.say(f"{hero} has already been picked. Pick another hero.")
     elif (hero in data["A_ban"] or hero in data["B_ban"]):
-        await bot.say("Hero has already been banned. Pick another hero.")
+        await bot.say(f"{hero} has already been banned. Pick another hero.")
     elif (hero not in hero_list):
-        await bot.say("Hero does not exist. Pick again.")
+        await bot.say(f"{hero} does not exist. Pick again.")
     else:
         if data["side"] == 1:
             data["A_side"].append(hero)
@@ -262,9 +262,9 @@ async def ban(ctx, *, hero):
     elif data["AI_turn"] == 1:
         await bot.say("It's not your turn yet. Can't you be a little patient?")
     elif (hero in data["A_ban"] or hero in data["B_ban"]):
-        await bot.say("Hero has already been banned. Ban another hero.")
+        await bot.say(f"{hero} has already been banned. Ban another hero.")
     elif (hero not in hero_list):
-        await bot.say("Hero does not exist. Ban again.")
+        await bot.say(f"{hero} does not exist. Ban again.")
     else:
         if data["side"] == 1:
             data["A_ban"].append(hero)

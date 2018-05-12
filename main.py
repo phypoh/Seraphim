@@ -212,6 +212,11 @@ async def pick(ctx, *, hero):
     id = ctx.message.author.id
     data = id_to_dict(id)
 
+    if ctx.message.author.nick:
+        name = ctx.message.author.nick
+    else:
+        name = ctx.message.author.name
+
     hero = hero.title()
     if data["AI_turn"] == 1:
         await bot.say("It's not your turn yet. Can't you be a little patient?")
@@ -227,11 +232,11 @@ async def pick(ctx, *, hero):
         if data["side"] == 1:
             data["A_side"].append(hero)
             turn_time(id)
-            await bot.say(f"{ctx.message.author.nick} has selected {hero}")
+            await bot.say(f"{name} has selected {hero}")
         elif bot.side == 0:
             data["B_side"].append(hero)
             turn_time(id)
-            await bot.say(f"{ctx.message.author.nick} has selected {hero}")
+            await bot.say(f"{name} has selected {hero}")
         output = turn_check(id)
         await bot.say(output)
         
@@ -246,6 +251,11 @@ async def ban(ctx, *, hero):
     id = ctx.message.author.id
     data = id_to_dict(id)
 
+    if ctx.message.author.nick:
+        name = ctx.message.author.nick
+    else:
+        name = ctx.message.author.name
+
     hero = hero.title()
     if len(data["B_ban"]) >= 2:
         await bot.say("Stop cheating. You're only supposed to ban a maximum of 2 heroes.")
@@ -259,11 +269,11 @@ async def ban(ctx, *, hero):
         if data["side"] == 1:
             data["A_ban"].append(hero)
             turn_time(id)
-            await bot.say(f"{ctx.message.author.nick} has banned {hero}")
+            await bot.say(f"{name} has banned {hero}")
         elif bot.side == 0:
             data["B_ban"].append(hero)
             turn_time(id)
-            await bot.say(f"{ctx.message.author.nick} has banned {hero}")
+            await bot.say(f"{name} has banned {hero}")
         output = turn_check(id)
         await bot.say(output)
 

@@ -7,17 +7,17 @@
 # @author: phypoh
 #==============================================================================
 
-import os
-#import datetime  
+import os 
 import discord
 from discord.ext import commands
-import random
 from API import hero_list, pull_all
 from AI_algos import AI_ban, AI_pick
+from utils import print_log, reset_draft
 
 bot = commands.Bot(command_prefix='!')
 
 bot.API_rates = pull_all()
+
 
 bot.A_ban = []
 bot.B_ban = []
@@ -28,13 +28,16 @@ bot.side = 1
 @bot.event
 async def on_ready():
     bot.load_extension("timeCog")
-    print("TimeCog loaded")
+    print("timeCog loaded")
     
     bot.load_extension("extraCog")
     print("extraCog loaded")
     
     bot.load_extension("apiCog")
     print("apiCog loaded")
+    
+    bot.load_extension("auxdraftCog")
+    print("auxdraftCog loaded")
     
     print('Logged in as')
     print(bot.user.name)
@@ -78,7 +81,12 @@ async def start():
         await bot.say("Player side: A")
     if bot.side == 0:
         await bot.say("Player side: B")
-    reset_draft()
+    
+    bot.A_ban = []
+    bot.B_ban = []
+    bot.A_side = []
+    bot.B_side = []
+    
     bot.AI_turn = bot.side
     turn_time()
     output = turn_check()
@@ -121,7 +129,7 @@ def turn_check():
                 turn_time()
                 output += turn_check()
     elif len(bot.B_side) == 5:
-        output += print_log()        
+        output += print_log(bot)        
     return output
      
 def turn_time():
@@ -200,95 +208,6 @@ async def ban(hero):
             await bot.say("Player has banned " + hero)
         output = turn_check()
         await bot.say(output)
-    
-
-
-#==============================================================================
-# AUXILLARIES
-#==============================================================================
-
-
-@bot.command()
-async def log():
-    output = print_log()
-    await bot.say(output)
-    
-def print_log():
-    output = "A Bans: "
-    for ban in bot.A_ban:
-        output += ban + " "
-
-    output += "\nB Bans: "
-    for ban in bot.B_ban:
-        output += ban + " "
-
-    output += "\nA Picks: "
-    for pick in bot.A_side:
-        output += pick + " "
-
-    output += "\nB Picks: "
-    for pick in bot.B_side:
-        output += pick + " "        
-    return output
-    
-@bot.command()
-async def reset():
-    """
-    Resets draft
-    """
-    reset_draft()
-    await bot.say("Draft entries have been reset.")
-
-def reset_draft():
-    bot.A_ban = []
-    bot.B_ban = []
-    bot.A_side = []
-    bot.B_side = []
-
-
-@bot.command()
-async def side(letter):
-    """
-    Sets a side for the draft
-    """
-    letter = letter.capitalize()
-    if letter == "A":
-        bot.side = 1
-        await bot.say("Side has been set to A for player.")
-
-    elif letter == "B":
-        bot.side = 0
-        await bot.say("Side has been set to B for player.")    
-    else:
-        await bot.say("Input unclear. Set side to either A or B")
-        
-@bot.command()
-async def myside():
-    """
-    Checks what's your current side of the draft.
-    """
-    
-    if bot.side == 1:
-        await bot.say("Player is on A side.")
-    elif bot.side == 0:
-        await bot.say("Player is on B side.")
-
-
-
-@bot.command()
-async def heroes():
-    """
-    Prints a list of heroes
-    """
-    output = print_heroes()
-    await bot.say(output)
-
-def print_heroes():
-    heroes = sorted(hero_list)
-    output = "List of heroes: \n"
-    for hero in heroes:
-        output += hero + ", "
-    return output
 
 bot.run(os.getenv('BOT_TOKEN'))
 

@@ -8,12 +8,12 @@ Created on Mon Apr  9 09:51:10 2018
 
 
 #==============================================================================
-# MISC COMMANDS
+# API COMMANDS
 #==============================================================================
 
 import discord
 from discord.ext import commands
-from API import pull_hero, pull_all
+from API import pull_hero, pull_all, tourney_hero, tourney_team, tourney_player
 
 
 class apiCog:
@@ -29,15 +29,13 @@ class apiCog:
     @commands.command()
     async def update(self):
         self.bot.API_rates = pull_all()
-        await self.bot.say("API updated. Cheers, VGpro")
+        await self.bot.say("API updated. Cheers, 4ever")
     
     @commands.command()
-    async def rates(self, ratename):
+    async def rates(self, ratename=None, order="descending"):
         """
         Type !rates win, !rates ban, or !rates pick for the following rates
         """
-        
-    async def rates(self, ratename=None, order="descending"):
         output = ""
         if ratename is None:
             await self.bot.say("Usage: rates [win/ban/pick]")
@@ -58,11 +56,10 @@ class apiCog:
         await self.bot.say(output)
     
     @commands.command()
-    async def synergy(self, hero):
+    async def synergy(self, hero, order="descending"):
         """
         Winrates of two heroes combined.
         """
-    async def synergy(self, hero, order="descending"):
         hero = hero.title()
         reversebool = self.orderbool(order)
         synergy = pull_hero(hero)["playingWith"]
@@ -73,12 +70,10 @@ class apiCog:
         await self.bot.say(output)
         
     @commands.command()
-    async def sr(self,hero, decimal= 3):
+    async def sr(self, hero, order="descending", decimal=3):
         """
         Synergy Ratios. (teammate & hero)/teammate winrates
         """
-        
-    async def sr(self, hero, order="descending", decimal=3):
         hero = hero.title()
         reversebool = self.orderbool(order)
         synergy = pull_hero(hero)["playingWith"]
@@ -110,6 +105,33 @@ class apiCog:
             output += row[0] + ": " + str(row[1])[:decimal + 2] + " \n"
         await self.bot.say(output)
         
+    @commands.command()
+    async def thero(self, hero):
+        hero = hero.title()
+        data = tourney_hero(hero)
+        output = ""
+        for row in data:
+            output += row + ": " + str(data[row]) + "\n"
+        await self.bot.say(output) 
+        
+    @commands.command()
+    async def tteam(self, team):
+        team = team.lower()
+        data = tourney_team(team)
+        output = ""
+        for row in data:
+            output += row + ": " + str(data[row]) + "\n"
+        await self.bot.say(output)
+        
+    @commands.command()
+    async def tplayer(self, player):
+        data = tourney_player(player)
+        output = ""
+        for row in data:
+            output += row + ": " + str(data[row]) + "\n"
+        await self.bot.say(output)
+            
+
 
 
 def setup(bot):

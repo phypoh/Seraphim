@@ -33,6 +33,36 @@ def pull_heroes():
 def pull_hero(hero):
     return all_heroes[hero]
 
+#==============================================================================
+# def pull_hero(hero):
+#     link = os.getenv('API_LINK')
+#     link += hero
+#     response = requests.get(link)
+#     data = response.json()
+#     return data
+# 
+#==============================================================================
+def tourney_hero(hero):
+    link = os.getenv('TOURNEY_LINK')
+    link += "/hero/" + hero
+    response = requests.get(link)
+    data = response.json()
+    return data
+    
+def tourney_team(team):
+    link = os.getenv('TOURNEY_LINK')
+    link += "/team/" + team
+    response = requests.get(link)
+    data = response.json()
+    return data
+
+def tourney_player(player):
+    link = os.getenv('TOURNEY_LINK')
+    link += "/player/" + player
+    response = requests.get(link)
+    data = response.json()
+    return data
+    
 
 API_rates = pull_all()
 hero_list = [x["name"] for x in API_rates]

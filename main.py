@@ -88,8 +88,9 @@ async def start(ctx):
         await bot.say("Player side: B")
     
     bot.AI_turn = data["side"]
-    data = turn_time(data)
-    data, output = turn_check(data)
+    turn_time(data)
+    output = turn_check(data)
+
     await bot.say(output)
 
 def id_to_dict(id):
@@ -117,7 +118,7 @@ def id_to_dict_clear(id):
     }
     return bot.draft_dict[id]
 
-def turn_check(data): #TODO
+def turn_check(data):
     output = ""
 
     if len(data["B_ban"]) < 2:
@@ -140,7 +141,7 @@ def turn_check(data): #TODO
     elif len(data["B_side"]) < 5:
         if data["AI_turn"] == 0:
             output += "Pick a hero"
-            return data, output
+            return output
         elif data["AI_turn"] == 1:
             chosen_hero = AI_pick(data["A_side"], data["B_side"], data["A_ban"], data["B_ban"])
             if data["side"] == 0:
@@ -154,8 +155,9 @@ def turn_check(data): #TODO
                 data = turn_time(data)
                 output += turn_check(data)
     elif len(data["B_side"]) == 5:
-        output += print_log(bot)        
-    return data, output
+        output += print_log(bot)
+
+    return output
      
 def turn_time(data):
     if len(data["B_ban"]) < 2:
@@ -177,8 +179,6 @@ def turn_time(data):
                 data["AI_turn"] = 0
     else:
         data["AI_turn"] = 2
-    return data
-        
     
 
 @bot.command(pass_context=True)
@@ -208,7 +208,7 @@ async def pick(ctx, *, hero):
             data["B_side"].append(hero)
             data = turn_time(data)
             await bot.say("Player has selected " + hero)
-        data, output = turn_check(data)
+        output = turn_check(data)
         await bot.say(output)
         
 @bot.command(pass_context=True)
@@ -236,7 +236,7 @@ async def ban(ctx, *, hero):
             data["B_ban"].append(hero)
             data = turn_time(data)
             await bot.say("Player has banned " + hero)
-        data, output = turn_check(data)
+        output = turn_check(data)
         await bot.say(output)
 
 bot.run(os.getenv('BOT_TOKEN'))

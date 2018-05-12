@@ -25,8 +25,8 @@ bot.API_rates = pull_all()
 #bot.B_side = []
 #bot.side = 1
 
-bot.ids = set()
-bot.draft_dict = {}
+ids = set()
+draft_dict = {}
 
 @bot.event
 async def on_ready():
@@ -78,6 +78,9 @@ async def start(ctx):
     """
     Starts the draft. Competitive 5v5 format
     """
+    global ids
+    global draft_dict
+
     # Clears the draft data since you are starting a new draft
     data = id_to_dict_clear(ctx.message.author.id)
 
@@ -97,18 +100,23 @@ def id_to_dict(id):
     """
     Helper function to access draft data based on user id.
     """
+    global ids
+    global draft_dict
+
     # If id isn't in draft_dict, set it up.
-    if id not in bot.ids:
-        bot.ids.add(id)
+    if id not in ids:
+        ids.add(id)
         return id_to_dict_clear(id)
     else:
-        return bot.draft_dict[id]
+        return draft_dict[id]
 
 def id_to_dict_clear(id):
     """
     Clears the values of the dict based on id.
     """
-    bot.draft_dict[id] = {
+    global ids
+    global draft_dict
+    draft_dict[id] = {
         "A_ban": [],
         "B_ban": [],
         "A_side": [],
@@ -116,7 +124,7 @@ def id_to_dict_clear(id):
         "side": 1,
         "AI_turn": 1
     }
-    return bot.draft_dict[id]
+    return draft_dict[id]
 
 def turn_check(data):
     output = ""
@@ -186,6 +194,9 @@ async def pick(ctx, *, hero):
     """
     Picks a hero
     """
+    global ids
+    global draft_dict
+
     data = id_to_dict(ctx.message.author.id)
 
     hero = hero.title()
@@ -216,6 +227,9 @@ async def ban(ctx, *, hero):
     """
     Bans a hero
     """
+    global ids
+    global draft_dict
+    
     data = id_to_dict(ctx.message.author.id)
 
     hero = hero.title()

@@ -42,6 +42,9 @@ async def on_ready():
     bot.load_extension("auxdraftCog")
     print("auxdraftCog loaded")
     
+    bot.load_extension("draftCog")
+    print("draftCog loaded")
+    
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)

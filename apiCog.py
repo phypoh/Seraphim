@@ -93,6 +93,7 @@ class apiCog:
         """
         Synergy Ratios. (teammate & hero)/hero winrates
         """
+        hero = hero.title()
         reversebool = self.orderbool(order)
         synergy = pull_hero(hero)["playingWith"]
         winrate = pull_hero(hero)["winRate"]

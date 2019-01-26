@@ -28,7 +28,7 @@ hero_range =  {
  'Joule': 'melee',
  'Kestrel': 'ranged',
  'Kensei': 'melee',
- 'Kinetc': 'ranged',
+ 'Kinetic': 'ranged',
  'Koshka': 'melee',
  'Krul': 'melee',
  'Lance': 'melee',

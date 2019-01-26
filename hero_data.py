@@ -51,7 +51,7 @@ hero_range =  {
  'Taka': 'melee',
  'Tony': 'melee',
  'Varya': 'ranged',
- 'Vox': 'ranged'
+ 'Vox': 'ranged',
  'Yates': 'melee',
  'Ylva': 'ranged'
  }

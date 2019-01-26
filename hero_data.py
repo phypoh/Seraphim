@@ -9,6 +9,7 @@ Created on Tue Mar 20 00:01:38 2018
 hero_range =  {
  'Adagio': 'ranged',
  'Alpha': 'melee',
+ 'Anka': 'melee',
  'Ardan': 'melee',
  'Baptiste': 'melee',
  'Baron': 'ranged',
@@ -23,13 +24,17 @@ hero_range =  {
  'Grumpjaw': 'melee',
  'Gwen': 'ranged',
  'Idris': 'both',
+ 'Inara': 'melee',
  'Joule': 'melee',
  'Kestrel': 'ranged',
+ 'Kensei': 'melee',
+ 'Kinetc': 'ranged',
  'Koshka': 'melee',
  'Krul': 'melee',
  'Lance': 'melee',
  'Lorelai': 'ranged',
  'Lyra': 'ranged',
+ 'Mangus': 'ranged',
  'Malene': 'ranged',
  'Ozo': 'melee',
  'Petal': 'ranged',
@@ -40,12 +45,16 @@ hero_range =  {
  'Rona': 'melee',
  'SAW': 'ranged',
  'Samuel': 'ranged',
+ 'Silvernail': 'ranged',
  'Skaarf': 'ranged',
  'Skye': 'ranged',
  'Taka': 'melee',
  'Tony': 'melee',
  'Varya': 'ranged',
- 'Vox': 'ranged'}
+ 'Vox': 'ranged'
+ 'Yates': 'melee',
+ 'Ylva': 'ranged'
+ }
 
 
 key_CP_items = [
